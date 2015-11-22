@@ -314,14 +314,14 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_in_delta()." do
       should_not_raise  { ok {3.14159}.in_delta?(3.14, 0.01)  }
       ex = should_raise { ok {3.14159}.in_delta?(3.14, 0.001) }
-      msg = /^Expected \|3\.14 - 3\.14159\| \(0\.0015899\d+\) to be <= 0\.001\.$/
+      msg = /^Expected \|3\.14 - 3\.14159\| \(0\.0015899\d+\) to be <=? 0\.001\.$/
       assert_match msg, ex.message
     end
 
     it "calls refute_in_delta() after NOT() called." do
       should_not_raise  { ok {3.14159}.NOT.in_delta?(3.14, 0.001) }
       ex = should_raise { ok {3.14159}.NOT.in_delta?(3.14, 0.01)  }
-      msg = /^Expected \|3\.14 - 3\.14159\| \(0\.0015899\d+\) to not be <= 0\.01\.$/
+      msg = /^Expected \|3\.14 - 3\.14159\| \(0\.0015899\d+\) to not be <=? 0\.01\.$/
       assert_match msg, ex.message
     end
 
@@ -333,14 +333,14 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_in_epsilon()." do
       should_not_raise  { ok {3.14159}.in_epsilon?(3.14, 0.001)  }
       ex = should_raise { ok {3.14159}.in_epsilon?(3.14, 0.0001) }
-      msg = /^Expected \|3\.14 - 3\.14159\| \(0.00158999\d+\) to be <= 0\.000314000\d+\.$/
+      msg = /^Expected \|3\.14 - 3\.14159\| \(0.00158999\d+\) to be <=? 0\.000314000\d+\.$/
       assert_match msg, ex.message
     end
 
     it "calls refute_in_epsilon() after NOT() called." do
       should_not_raise  { ok {3.14159}.NOT.in_epsilon?(3.14, 0.0001) }
       ex = should_raise { ok {3.14159}.NOT.in_epsilon?(3.14, 0.001)  }
-      msg = /^Expected \|3\.14 - 3\.14159\| \(0.00158999\d+\) to not be <= 0\.00314\.$/
+      msg = /^Expected \|3\.14 - 3\.14159\| \(0.00158999\d+\) to not be <=? 0\.00314\.$/
       assert_match msg, ex.message
     end
 
@@ -587,7 +587,7 @@ describe Minitest::Ok::AssertionObject do
         (x = ok {nil}).append('bar')
       end
       x._mark_as_tested()
-      msg = /^undefined method `append' for \#<Minitest::Ok::AssertionObject:\w+>$/
+      msg = /^undefined method `append' for \#<Mini[tT]est::Ok::AssertionObject:\w+>$/
       assert_match msg, ex.message
       #
       ex = assert_raises(NoMethodError) do

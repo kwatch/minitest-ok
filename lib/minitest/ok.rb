@@ -6,7 +6,7 @@
 ### $License: MIT License $
 ###
 
-require 'minitest'
+require 'minitest/unit'
 
 
 module Minitest
@@ -467,7 +467,8 @@ module Minitest
             @context.__send__("assert_#{symbol.to_s[0..-2]}", @actual, *args, &block)
           rescue NoMethodError
             result = @actual.__send__(symbol, *args, &block)
-            @context.assert result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) but failed." }
+            msg = result ? nil : "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) but failed."
+            @context.assert result, msg
           end
         else
           ## Try refute_xxxx() at first.
@@ -476,7 +477,8 @@ module Minitest
             @context.__send__("refute_#{symbol.to_s[0..-2]}", @actual, *args, &block)
           rescue NoMethodError
             result = @actual.__send__(symbol, *args, &block)
-            @context.refute result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) to fail but succeeded." }
+            msg = ! result ? nil : "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) to fail but succeeded."
+            @context.refute result, msg
           end
         end
         self
@@ -497,9 +499,11 @@ module Minitest
       def truthy?
         _mark_as_tested()
         unless @not
-          @context.assert @actual, proc { "Expected (!! #{@actual.inspect}) == true, but not."  }
+          msg = @actual ? nil : "Expected (!! #{@actual.inspect}) == true, but not."
+          @context.assert @actual, msg
         else
-          @context.refute @actual, proc { "Expected (!! #{@actual.inspect}) == false, but not." }
+          msg = ! @actual ? nil : "Expected (!! #{@actual.inspect}) == false, but not."
+          @context.refute @actual, msg
         end
         self
       end
@@ -517,9 +521,11 @@ module Minitest
       def falthy?
         _mark_as_tested()
         unless @not
-          @context.refute @actual, proc { "Expected (!! #{@actual.inspect}) == false, but not." }
+          msg = ! @actual ? nil : "Expected (!! #{@actual.inspect}) == false, but not."
+          @context.refute @actual, msg
         else
-          @context.assert @actual, proc { "Expected (!! #{@actual.inspect}) == true, but not."  }
+          msg = @actual ? nil : "Expected (!! #{@actual.inspect}) == true, but not."
+          @context.assert @actual, msg
         end
         self
       end
@@ -539,8 +545,9 @@ module Minitest
           "Expected <object>.#{name} #{op} <exected>, but failed.\n" +
           " (object: #{object.inspect})"
         }
-        @context.assert_equal expected, actual, proc { pr.call('==') }  unless @not
-        @context.refute_equal expected, actual, proc { pr.call('!=') }  if     @not
+        result = expected == actual
+        @context.assert_equal expected, actual, (result ? nil : pr.call('=='))  unless @not
+        @context.refute_equal expected, actual, (result ? pr.call('!=') : nil)  if     @not
         self
       end
 
@@ -573,8 +580,9 @@ module Minitest
           "Expected <object>[#{key.inspect}] #{op} <exected>, but failed.\n" +
           " (object: #{object.inspect})"
         }
-        @context.assert_equal expected, actual, proc { pr.call('==') }  unless @not
-        @context.refute_equal expected, actual, proc { pr.call('!=') }  if     @not
+        result = expected == actual
+        @context.assert_equal expected, actual, (result ? nil : pr.call('=='))  unless @not
+        @context.refute_equal expected, actual, (result ? pr.call('!=') : nil)  if     @not
         self
       end
 

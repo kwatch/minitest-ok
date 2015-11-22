@@ -360,6 +360,20 @@ module Minitest
       end
 
       ##
+      ## Same as <tt>assert_includes()</tt>.
+      ##
+      ##   ok {1}.in?(1..9)         # Pass
+      ##   ok {0}.in?(1..9)         # Fail
+      ##   ok {0}.NOT.in?(1..9)     # Pass
+      ##
+      def in?(expected)
+        _mark_as_tested()
+        @context.assert_includes expected, @actual  unless @not
+        @context.refute_includes expected, @actual  if     @not
+        self
+      end
+
+      ##
       ## Same as <tt>assert_output()</tt>.
       ##
       ##   ok {proc { puts 'X' }}.output?("X\n")  # Pass

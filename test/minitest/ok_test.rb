@@ -437,6 +437,25 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#in?' do
+
+    it "calls assert_includes()." do
+      should_not_raise  { ok {1}.in?(1..9) }
+      ex = should_raise { ok {0}.in?(1..9) }
+      msg = "Expected 1..9 to include 0."
+      assert_equal msg, ex.message
+    end
+
+    it "calls refute_includes() after NOT() called." do
+      should_not_raise  { ok {0}.NOT.in?(1..9) }
+      ex = should_raise { ok {1}.NOT.in?(1..9) }
+      msg = "Expected 1..9 to not include 1."
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
   describe '#output?' do
 
     it "calls assert_output()." do

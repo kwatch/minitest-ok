@@ -756,6 +756,32 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#items' do
+
+    it "calles assert_equal()." do
+      user = {:name=>'Haruhi', :age=>16}
+      should_not_raise  { ok {user}.items(name: 'Haruhi', age: 16) }
+      ex = should_raise { ok {user}.items(name: 'Haruhi', age: 12) }
+      msg = ("Expected <object>[:age] == <exected>, but failed.\n" +
+             " (object: {:name=>\"Haruhi\", :age=>16}).\n" +
+             "Expected: 12\n" +
+             "  Actual: 16")
+      assert_equal msg, ex.message
+    end
+
+    it "calles refute_equal() after NOT() called." do
+      user = {:name=>'Haruhi', :age=>16}
+      should_not_raise  { ok {user}.NOT.items(name: 'Suzumiya', age: 12) }
+      ex = should_raise { ok {user}.NOT.items(name: 'Suzumiya', age: 16) }
+      msg = ("Expected <object>[:age] != <exected>, but failed.\n" +
+             " (object: {:name=>\"Haruhi\", :age=>16}).\n" +
+             "Expected 16 to not be equal to 16.")
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
   describe '#file_exist?' do
 
     it "calles assert()." do

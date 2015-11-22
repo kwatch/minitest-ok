@@ -565,6 +565,20 @@ module Minitest
       end
 
       ##
+      ## Tests keys and values.
+      ##
+      ##   user = {:name=>'Haruhi', :age=>16}
+      ##   ok {user}.items(name: 'Haruhi', age: 16)   # Pass
+      ##
+      def items(expecteds={})
+        _mark_as_tested()
+        expecteds.each do |key, expected|
+          item(key, expected)
+        end
+        self
+      end
+
+      ##
       ## Tests whether file exists or not.
       ##
       ##   ok {__FILE__}.file_exist?         # Pass

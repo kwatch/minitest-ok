@@ -264,6 +264,36 @@ module Minitest
         self
       end
 
+      def file_exist?
+        @tested[0] = true
+        fpath = @actual
+        unless @not
+          @context.assert File.exist?(fpath), "File '#{fpath}' doesn't exist."
+          @context.assert File.file?(fpath),  "'#{fpath}' is not a file."
+        else
+          @context.refute File.exist?(fpath), "File '#{fpath}' exists unexpectedly."
+        end
+      end
+
+      def dir_exist?
+        @tested[0] = true
+        fpath = @actual
+        unless @not
+          @context.assert File.exist?(fpath),     "Directory '#{fpath}' doesn't exist."
+          @context.assert File.directory?(fpath), "'#{fpath}' is not a directory."
+        else
+          @context.refute File.exist?(fpath),     "Directory '#{fpath}' exists unexpectedly."
+        end
+      end
+
+      def not_exist?
+        @tested[0] = true
+        fpath = @actual
+        @context.assert ! File.exist?(fpath), "'#{fpath}' exists unexpectedly." unless @not
+        @context.refute ! File.exist?(fpath), "'#{fpath}' doesn't exist."       if     @not
+        self
+      end
+
     end
 
 

@@ -589,4 +589,78 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#file_exist?' do
+
+    it "calles assert()." do
+      fpath = __FILE__
+      should_not_raise  { ok {fpath}.file_exist? }
+      #
+      ex = should_raise { ok {'XXX'}.file_exist? }
+      msg = "File 'XXX' doesn't exist."
+      assert_equal msg, ex.message
+      #
+      ex = should_raise { ok {Dir.pwd}.file_exist? }
+      msg = "'#{Dir.pwd}' is not a file."
+      assert_equal msg, ex.message
+    end
+
+    it "calles assert() after NOT() called." do
+      fpath = __FILE__
+      should_not_raise  { ok {'XXX'}.NOT.file_exist? }
+      ex = should_raise { ok {fpath}.NOT.file_exist? }
+      msg = "File '#{fpath}' exists unexpectedly."
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
+  describe '#dir_exist?' do
+
+    it "calles assert()." do
+      dpath = Dir.pwd
+      should_not_raise  { ok {dpath}.dir_exist? }
+      #
+      ex = should_raise { ok {'XXX'}.dir_exist? }
+      msg = "Directory 'XXX' doesn't exist."
+      assert_equal msg, ex.message
+      #
+      fpath = __FILE__
+      ex = should_raise { ok {fpath}.dir_exist? }
+      msg = "'#{fpath}' is not a directory."
+      assert_equal msg, ex.message
+    end
+
+    it "calles assert() after NOT() called." do
+      dpath = Dir.pwd
+      should_not_raise  { ok {'XXX'}.NOT.dir_exist? }
+      ex = should_raise { ok {dpath}.NOT.dir_exist? }
+      msg = "Directory '#{dpath}' exists unexpectedly."
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
+  describe '#not_exist?' do
+
+    it "calles assert()." do
+      fpath = __FILE__
+      should_not_raise  { ok {'XXX'}.not_exist? }
+      ex = should_raise { ok {fpath}.not_exist? }
+      msg = "'#{fpath}' exists unexpectedly."
+      assert_equal msg, ex.message
+    end
+
+    it "calles assert() after NOT() called." do
+      fpath = __FILE__
+      should_not_raise  { ok {fpath}.NOT.not_exist? }
+      ex = should_raise { ok {'XXX'}.NOT.not_exist? }
+      msg = "'XXX' doesn't exist."
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
 end

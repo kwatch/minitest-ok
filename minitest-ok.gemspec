@@ -1,33 +1,31 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'minitest/ok/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "minitest-ok"
-  spec.version       = Minitest::Ok::VERSION
+  spec.version       = '$Release: 0.0.0 $'.split()[1]
   spec.authors       = ["makoto kuwata"]
-  spec.email         = ["kwa@kuwata-lab.com"]
+  spec.email         = ["kwa(at)kuwata-lab.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
+  spec.summary       = "'ok {1+1} == 2' instead of 'assert_equal 2, 1+1'"
+  spec.description   = <<'END'
+Using Minitest::Ok, you can write:
 
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
+* 'ok {1+1} == 2' instead of 'assert_equal 2, 1+1',
+* 'ok {1+1} > 0' instead of 'assert_operator 1+1, :>, 0',
+* 'ok {5}.in?(1..9)' instead of 'assert_include 1..9, 5',
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+and so on.
+END
+  spec.homepage      = "https://github.com/kwatch/minitest-ok"
+  spec.license       = "MIT-License"
+
+  spec.files         = Dir[*%w[
+                         README.md MIT-LICENSE Rakefile
+                         lib/**/*.rb
+                         test/test_helper.rb test/**/*_test.rb
+                       ]]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest"
+  spec.required_ruby_version = '>= 2.0'
+  spec.add_runtime_dependency "minitest"
 end

@@ -548,6 +548,34 @@ describe Minitest::Ok::AssertionObject do
       assert_equal msg, ex.message
     end
 
+    it "calls corresponding 'assert_xxxx' when 'xxxx?' called." do
+      MiniTest::Assertions.class_eval do
+        def assert_utf8(str)
+          assert str.encoding == Encoding::UTF_8, "Expected utf-8 string but not."
+        end
+      end
+      utf8  = "foobar".force_encoding('utf-8')
+      ascii = "foobar".force_encoding('us-ascii')
+      should_not_raise  { ok {utf8 }.utf8? }
+      ex = should_raise { ok {ascii}.utf8? }
+      msg = 'Expected utf-8 string but not.'
+      assert_equal msg, ex.message
+    end
+
+    it "calls corresponding 'refute_xxxx' when 'xxxx?' called after NOT() called." do
+      MiniTest::Assertions.class_eval do
+        def refute_utf8(str)
+          refute str.encoding == Encoding::UTF_8, "Expected non utf-8 string but it is."
+        end
+      end
+      utf8  = "foobar".force_encoding('utf-8')
+      ascii = "foobar".force_encoding('us-ascii')
+      should_not_raise  { ok {ascii}.NOT.utf8? }
+      ex = should_raise { ok {utf8 }.NOT.utf8? }
+      msg = 'Expected non utf-8 string but it is.'
+      assert_equal msg, ex.message
+    end
+
   end
 
 

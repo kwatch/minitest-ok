@@ -233,11 +233,24 @@ module Minitest
           return super
         end
         @tested[0] = true
-        result = @actual.__send__(symbol, *args, &block)
         unless @not
-          @context.assert result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) but failed." }
+          ## Try assert_xxxx() at first.
+          ## If not defined, try assert @actual.xxxx?.
+          begin
+            @context.__send__("assert_#{symbol.to_s[0..-2]}", @actual, *args, &block)
+          rescue NoMethodError
+            result = @actual.__send__(symbol, *args, &block)
+            @context.assert result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) but failed." }
+          end
         else
-          @context.refute result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) to fail but succeeded." }
+          ## Try refute_xxxx() at first.
+          ## If not defined, try refute @actual.xxxx?.
+          begin
+            @context.__send__("refute_#{symbol.to_s[0..-2]}", @actual, *args, &block)
+          rescue NoMethodError
+            result = @actual.__send__(symbol, *args, &block)
+            @context.refute result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) to fail but succeeded." }
+          end
         end
         self
       end

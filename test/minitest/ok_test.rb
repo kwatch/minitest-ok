@@ -470,4 +470,85 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#frozen?' do
+
+    it "calls assert_predicate()." do
+      should_not_raise  { ok {"".freeze}.frozen? }
+      ex = should_raise { ok {"".dup() }.frozen? }
+      msg = 'Expected "" to be frozen?.'
+      assert_equal msg, ex.message
+    end
+
+    it "calls refute_predicate() after NOT() called." do
+      should_not_raise  { ok {"".dup() }.NOT.frozen? }
+      ex = should_raise { ok {"".freeze}.NOT.frozen? }
+      msg = 'Expected "" to not be frozen?.'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
+  describe '#instance_variable_defined?' do
+
+    def obj_with_x(x)
+      obj = Object.new
+      obj.instance_variable_set('@x', x)
+      return obj
+    end
+
+    it "calls assert()." do
+      obj = obj_with_x(10)
+      should_not_raise  { ok {obj}.instance_variable_defined?('@x') }
+      ex = should_raise { ok {obj}.instance_variable_defined?('@y') }
+      msg = /^Expected #<Object:\w+ @x=10> to have instance variable \@y, but not\.$/
+      assert_match msg, ex.message
+    end
+
+    it "calls refute() after NOT() called." do
+      obj = obj_with_x(10)
+      should_not_raise  { ok {obj}.NOT.instance_variable_defined?('@y') }
+      ex = should_raise { ok {obj}.NOT.instance_variable_defined?('@x') }
+      msg = /^Expected #<Object:\w+ @x=10> not to have instance variable \@x, but has it\.$/
+      assert_match msg, ex.message
+    end
+
+  end
+
+
+  describe '#method_missing()' do
+
+    it "calls super when not predicate." do
+      x = nil
+      ex = assert_raises(NoMethodError) do
+        (x = ok {nil}).append('bar')
+      end
+      x.instance_variable_get('@tested')[0] = true
+      msg = /^undefined method `append' for \#<Minitest::Ok::AssertionObject:\w+>$/
+      assert_match msg, ex.message
+      #
+      ex = assert_raises(NoMethodError) do
+        ok {nil}.start_with?('bar')
+      end
+      msg = "undefined method `start_with?' for nil:NilClass"
+      assert_equal msg, ex.message
+    end
+
+    it "calles assert()." do
+      should_not_raise  { ok {"foobar"}.start_with?('foo') }
+      ex = should_raise { ok {"foobar"}.start_with?('bar') }
+      msg = 'Expected "foobar".start_with?("bar") but failed.'
+      assert_equal msg, ex.message
+    end
+
+    it "calles refute() after NOT() called." do
+      should_not_raise  { ok {"foobar"}.NOT.start_with?('bar') }
+      ex = should_raise { ok {"foobar"}.NOT.start_with?('foo') }
+      msg = 'Expected "foobar".start_with?("foo") to fail but succeeded.'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
 end

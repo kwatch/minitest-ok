@@ -201,6 +201,48 @@ module Minitest
         self
       end
 
+      ## for predicates
+
+      def frozen?
+        @tested[0] = true
+        @context.assert_predicate @actual, :frozen?  unless @not
+        @context.refute_predicate @actual, :frozen?  if     @not
+        self
+      end
+
+      def tainted?
+        @tested[0] = true
+        @context.assert_predicate @actual, :tainted?  unless @not
+        @context.refute_predicate @actual, :tainted?  if     @not
+        self
+      end
+
+      def instance_variable_defined?(varname)
+        @tested[0] = true
+        result = @actual.instance_variable_defined?(varname)
+        unless @not
+          @context.assert result, "Expected #{@actual.inspect} to have instance variable #{varname}, but not."
+        else
+          @context.refute result, "Expected #{@actual.inspect} not to have instance variable #{varname}, but has it."
+        end
+        self
+      end
+
+      def method_missing(symbol, *args, &block)
+        unless symbol.to_s =~ /\?\z/
+          return super
+        end
+        @tested[0] = true
+        result = @actual.__send__(symbol, *args, &block)
+        unless @not
+          @context.assert result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) but failed." }
+        else
+          @context.refute result, proc { "Expected #{@actual.inspect}.#{symbol}(#{args.inspect[1..-2]}) to fail but succeeded." }
+        end
+        self
+      end
+
+
     end
 
 

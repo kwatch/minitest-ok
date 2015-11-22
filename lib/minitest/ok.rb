@@ -18,17 +18,17 @@ module Minitest
     ## Helper method to call assertion methods.
     ## See AssertionObject class for details.
     ##
-    ##   ok {1+1} == 2        # same as assert_equal 2, 1+1
-    ##   ok {1+1} != 1        # same as refute_equal 1, 1+1
-    ##   ok {1+1} >  1        # same as assert_operator 1+1, :>, 1
-    ##   ok {1+1} <= 2        # same as assert_operator 1+1, :<=, 2
-    ##   ok {'123'} =~ /\d+/  # same as assert_match /\d+/, '123'
+    ##   ok {1+1} == 2               # same as assert_equal 2, 1+1
+    ##   ok {1+1} != 1               # same as refute_equal 1, 1+1
+    ##   ok {1+1} >  1               # same as assert_operator 1+1, :>, 1
+    ##   ok {1+1} <= 2               # same as assert_operator 1+1, :<=, 2
+    ##   ok {'123'} =~ /\d+/         # same as assert_match /\d+/, '123'
     ##   ok {[]}.kind_of?(Array)     # same as assert_kind_of Array, []
     ##   ok {[]}.NOT.kind_of?(Hash)  # same as refute_kind_of Hash, []
     ##   ok {1..9}.include?(5)       # same as assert_includes 5, 1..9
     ##   ok {1..9}.NOT.include?(0)   # same as refute_includes 0, 1..9
-    ##   ok {""}.truthy?      # same as assert true, !!""
-    ##   ok {nil}.falthy?     # same as assert false, !!""
+    ##   ok {""}.truthy?             # same as assert true, !!""
+    ##   ok {nil}.falthy?            # same as assert false, !!""
     ##
     ##   ex = ok { proc { 1 / 0 } }.raise?(ZeroDivisionError, "divided by 0")
     ##   p ex      #=> #<ZeroDivisionError: divided by 0>

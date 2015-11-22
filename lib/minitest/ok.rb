@@ -30,10 +30,8 @@ module Minitest
     ##   ok {""}.truthy?      # same as assert true, !!""
     ##   ok {nil}.falthy?     # same as assert false, !!""
     ##
-    ##   pr = proc { 1 / 0 }
-    ##   ok {pr}.raise?(ZeroDivisionError, "divided by 0")
-    ##   ok {pr.exception}.is_a?(ZeroDivisionError)
-    ##   ok {pr.exception.message} == "divided by 0"
+    ##   ex = ok { proc { 1 / 0 } }.raise?(ZeroDivisionError, "divided by 0")
+    ##   p ex      #=> #<ZeroDivisionError: divided by 0>
     ##
     def ok
       actual = yield
@@ -275,12 +273,12 @@ module Minitest
       ##
       ## Same as <tt>assert_raises()</tt>.
       ##
-      ##   pr = proc { 1 / 0 }
-      ##   ok {pr}.raise?(ZeroDivisionError, "divided by zero")  # Pass
-      ##   ok {pr.exception}.instance_of?(ZeroDivisionError)
-      ##   ok {pr.exception.message} == "divided by zero"
+      ##   ex = ok { proc { 1/0 } }.raise?(ZeroDivisionError)  # Pass
+      ##   p ex.class        #=> ZeroDivisionError
+      ##   ex = ok { proc { 1/0 } }.raise?(ZeroDivisionError, "divided by zero")
+      ##   ex = ok { proc { 1/0 } }.raise?(ZeroDivisionError, /^divided by zero$/)
       ##
-      ##   ok {proc { 1 / 1 }}.NOT.raise?(Exception)             # Pass
+      ##   ok { proc { 1 / 1 } }.NOT.raise?(Exception)         # Pass
       ##
       def raise?(exception_class, message=nil)
         _mark_as_tested()
@@ -296,16 +294,7 @@ module Minitest
             @context.assert true
           end
         end
-        @actual.instance_variable_set('@exception', ex)
-        class << @actual
-          attr_reader :exception
-        end
-        if message.is_a?(Regexp)
-          @context.assert_match message, ex.message
-        elsif message
-          @context.assert_equal message, ex.message
-        end
-        self
+        return ex   # not self!
       end
 
       ##

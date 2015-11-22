@@ -489,6 +489,25 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#tainted?' do
+
+    it "calls assert_predicate()." do
+      should_not_raise  { ok {"".taint}.tainted? }
+      ex = should_raise { ok {"".dup()}.tainted? }
+      msg = 'Expected "" to be tainted?.'
+      assert_equal msg, ex.message
+    end
+
+    it "calls refute_predicate() after NOT() called." do
+      should_not_raise  { ok {"".dup()}.NOT.tainted? }
+      ex = should_raise { ok {"".taint}.NOT.tainted? }
+      msg = 'Expected "" to not be tainted?.'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
   describe '#instance_variable_defined?' do
 
     def obj_with_x(x)
@@ -539,6 +558,9 @@ describe Minitest::Ok::AssertionObject do
       ex = should_raise { ok {"foobar"}.start_with?('bar') }
       msg = 'Expected "foobar".start_with?("bar") but failed.'
       assert_equal msg, ex.message
+      #
+      should_not_raise  { ok {[1,2,3]}.all? {|x| x <= 3 }}
+      should_not_raise  { ok {[1,2,3]}.any? {|x| x % 2 == 0}}
     end
 
     it "calles refute() after NOT() called." do

@@ -9,6 +9,12 @@
 require 'minitest/unit'
 
 
+## for Ruby 1.9
+if ! defined?(Minitest) && defined?(MiniTest)
+  Minitest = MiniTest
+end
+
+
 module Minitest
 
 
@@ -36,6 +42,16 @@ module Minitest
     def ok
       actual = yield
       Ok::AssertionObject.new(actual, self, caller(1, 1).first)
+    end
+
+    ## for Ruby 1.9
+    begin
+      caller(1, 1)
+    rescue ArgumentError
+      def ok
+        actual = yield
+        Ok::AssertionObject.new(actual, self, caller(1).first)
+      end
     end
 
   end

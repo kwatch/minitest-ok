@@ -335,17 +335,21 @@ describe Minitest::Ok::AssertionObject do
       assert_equal msg, ex.message
     end
 
+    it "fails when exception raised after NOT() called." do
+      should_not_raise  { ok {proc{1/1}}.NOT.raise?(ZeroDivisionError) }
+      #
+      ex = should_raise { ok {proc{1/0}}.NOT.raise?(ZeroDivisionError) }
+      msg = "Exception ZeroDivisionError raised unexpectedly."
+      assert_equal msg, ex.message
+      #
+      assert_raises(ZeroDivisionError) do
+        ok {proc{1/0}}.NOT.raise?(NoMethodError)
+      end
+    end
+
     it "can take error message in addition to exception class." do
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, "divided by 0") }
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, /by [0]/) }
-    end
-
-    it "raises error because refute_raises() is not defiend in Minitest." do
-      ex = assert_raises(RuntimeError) do
-        ok {proc{1/0}}.NOT.raise?(ZeroDivisionError)
-      end
-      msg = "NOT.raise? is unsupported because refute_raises() is not defined in Minitest."
-      assert_equal msg, ex.message
     end
 
   end

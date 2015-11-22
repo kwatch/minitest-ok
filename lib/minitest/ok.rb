@@ -280,13 +280,22 @@ module Minitest
       ##   ok {pr.exception}.instance_of?(ZeroDivisionError)
       ##   ok {pr.exception.message} == "divided by zero"
       ##
-      ##   ok {proc { 1 / 1 }}.NOT.raise?(Exception)     # NOT AVAILABLE
+      ##   ok {proc { 1 / 1 }}.NOT.raise?(Exception)             # Pass
       ##
       def raise?(exception_class, message=nil)
         _mark_as_tested()
-        ! @not  or
-          raise "NOT.raise? is unsupported because refute_raises() is not defined in Minitest."
-        ex = @context.assert_raises(exception_class) { @actual.call }
+        ex = nil
+        unless @not
+          ex = @context.assert_raises(exception_class) { @actual.call }
+        else
+          begin
+            @actual.call
+          rescue exception_class => ex
+            @context.assert false, "Exception #{ex.class} raised unexpectedly."
+          else
+            @context.assert true
+          end
+        end
         @actual.instance_variable_set('@exception', ex)
         class << @actual
           attr_reader :exception

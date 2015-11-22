@@ -504,6 +504,26 @@ module Minitest
       end
 
       ##
+      ## Tests attribute value.
+      ##
+      ##   User = Struct.new(:user, :age)   # define User class quickly
+      ##   user = User.new('Haruhi', 16)
+      ##   ok {user}.attr(:name, 'Haruhi').attr(:age, 16)   # Pass
+      ##
+      def attr(name, expected)
+        _mark_as_tested()
+        object = @actual
+        actual = object.__send__(name)
+        pr = proc {|op|
+          "Expected <object>.#{name} #{op} <exected>, but failed.\n" +
+          " (object: #{object.inspect})"
+        }
+        @context.assert_equal expected, actual, proc { pr.call('==') }  unless @not
+        @context.refute_equal expected, actual, proc { pr.call('!=') }  if     @not
+        self
+      end
+
+      ##
       ## Tests whether file exists or not.
       ##
       ##   ok {__FILE__}.file_exist?         # Pass

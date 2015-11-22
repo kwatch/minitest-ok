@@ -157,6 +157,7 @@ module Minitest
         _mark_as_tested()
         @context.assert_operator @actual, :'<=', expected  unless @not
         @context.refute_operator @actual, :'<=', expected  if     @not
+        self
       end
 
       ##

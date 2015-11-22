@@ -134,3 +134,10 @@ end
 $Copyright: copyright(c) 2015 kuwata-lab.com all rights reserved $
 
 $License: MIT License $
+
+
+## History
+
+### 2015-11-22: Release 0.1.0
+
+* First release

@@ -523,7 +523,7 @@ describe Minitest::Ok::AssertionObject do
       ex = assert_raises(NoMethodError) do
         (x = ok {nil}).append('bar')
       end
-      x.instance_variable_get('@tested')[0] = true
+      x._mark_as_tested()
       msg = /^undefined method `append' for \#<Minitest::Ok::AssertionObject:\w+>$/
       assert_match msg, ex.message
       #

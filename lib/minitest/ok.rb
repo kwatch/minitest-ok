@@ -42,68 +42,73 @@ module Minitest
         })
       end
 
+      def _mark_as_tested   # :nodoc:
+        @tested[0] = true
+        self
+      end
+
       def NOT()
         @not = ! @not
         self
       end
 
       def ==(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_equal expected, @actual  unless @not
         @context.refute_equal expected, @actual  if     @not
         self
       end
 
       def !=(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.refute_equal expected, @actual  unless @not
         @context.assert_equal expected, @actual  if     @not
         self
       end
 
       def >(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_operator @actual, :'>', expected  unless @not
         @context.refute_operator @actual, :'>', expected  if     @not
         self
       end
 
       def >=(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_operator @actual, :'>=', expected  unless @not
         @context.refute_operator @actual, :'>=', expected  if     @not
         self
       end
 
       def <(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_operator @actual, :'<', expected  unless @not
         @context.refute_operator @actual, :'<', expected  if     @not
         self
       end
 
       def <=(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_operator @actual, :'<=', expected  unless @not
         @context.refute_operator @actual, :'<=', expected  if     @not
       end
 
       def =~(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_match expected, @actual  unless @not
         @context.refute_match expected, @actual  if     @not
         self
       end
 
       def !~(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.refute_match expected, @actual  unless @not
         @context.assert_match expected, @actual  if     @not
         self
       end
 
       def is_a?(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_kind_of expected, @actual  unless @not
         @context.refute_kind_of expected, @actual  if     @not
         self
@@ -112,42 +117,42 @@ module Minitest
       alias kind_of? is_a?
 
       def instance_of?(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_instance_of expected, @actual  unless @not
         @context.refute_instance_of expected, @actual  if     @not
         self
       end
 
       def same?(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_same expected, @actual  unless @not
         @context.refute_same expected, @actual  if     @not
         self
       end
 
       def empty?
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_empty @actual  unless @not
         @context.refute_empty @actual  if     @not
         self
       end
 
       def in_delta?(expected, delta)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_in_delta(expected, @actual, delta)  unless @not
         @context.refute_in_delta(expected, @actual, delta)  if     @not
         self
       end
 
       def in_epsilon?(expected, epsilon)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_in_epsilon(expected, @actual, epsilon)  unless @not
         @context.refute_in_epsilon(expected, @actual, epsilon)  if     @not
         self
       end
 
       def raise?(exception_class, message=nil)
-        @tested[0] = true
+        _mark_as_tested()
         ! @not  or
           raise "NOT.raise? is unsupported because refute_raises() is not defined in Minitest."
         ex = @context.assert_raises(exception_class) { @actual.call }
@@ -164,7 +169,7 @@ module Minitest
       end
 
       def throw?(sym)
-        @tested[0] = true
+        _mark_as_tested()
         ! @not  or
           raise "NOT.throw? is unsupported because refute_throws() is not defined in Minitest."
         @context.assert_throws(sym) { @actual.call }
@@ -172,21 +177,21 @@ module Minitest
       end
 
       def respond_to?(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_respond_to @actual, expected  unless @not
         @context.refute_respond_to @actual, expected  if     @not
         self
       end
 
       def include?(expected)
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_includes @actual, expected  unless @not
         @context.refute_includes @actual, expected  if     @not
         self
       end
 
       def output?(stdout=nil, stderr=nil)
-        @tested[0] = true
+        _mark_as_tested()
         ! @not  or
           raise "use ok().silent? instead of ok().NOT.output?."
         @context.assert_output(stdout, stderr, &@actual)
@@ -194,7 +199,7 @@ module Minitest
       end
 
       def silent?
-        @tested[0] = true
+        _mark_as_tested()
         ! @not  or
           raise "use ok().output? instead of ok().NOT.silent?."
         @context.assert_silent(&@actual)
@@ -204,21 +209,21 @@ module Minitest
       ## for predicates
 
       def frozen?
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_predicate @actual, :frozen?  unless @not
         @context.refute_predicate @actual, :frozen?  if     @not
         self
       end
 
       def tainted?
-        @tested[0] = true
+        _mark_as_tested()
         @context.assert_predicate @actual, :tainted?  unless @not
         @context.refute_predicate @actual, :tainted?  if     @not
         self
       end
 
       def instance_variable_defined?(varname)
-        @tested[0] = true
+        _mark_as_tested()
         result = @actual.instance_variable_defined?(varname)
         unless @not
           @context.assert result, "Expected #{@actual.inspect} to have instance variable #{varname}, but not."
@@ -232,7 +237,7 @@ module Minitest
         unless symbol.to_s =~ /\?\z/
           return super
         end
-        @tested[0] = true
+        _mark_as_tested()
         unless @not
           ## Try assert_xxxx() at first.
           ## If not defined, try assert @actual.xxxx?.
@@ -258,7 +263,7 @@ module Minitest
       ## other helpers
 
       def truthy?
-        @tested[0] = true
+        _mark_as_tested()
         unless @not
           @context.assert @actual, proc { "Expected (!! #{@actual.inspect}) == true, but not."  }
         else
@@ -268,7 +273,7 @@ module Minitest
       end
 
       def falthy?
-        @tested[0] = true
+        _mark_as_tested()
         unless @not
           @context.refute @actual, proc { "Expected (!! #{@actual.inspect}) == false, but not." }
         else
@@ -278,7 +283,7 @@ module Minitest
       end
 
       def file_exist?
-        @tested[0] = true
+        _mark_as_tested()
         fpath = @actual
         unless @not
           @context.assert File.exist?(fpath), "File '#{fpath}' doesn't exist."
@@ -289,7 +294,7 @@ module Minitest
       end
 
       def dir_exist?
-        @tested[0] = true
+        _mark_as_tested()
         fpath = @actual
         unless @not
           @context.assert File.exist?(fpath),     "Directory '#{fpath}' doesn't exist."
@@ -300,7 +305,7 @@ module Minitest
       end
 
       def not_exist?
-        @tested[0] = true
+        _mark_as_tested()
         fpath = @actual
         @context.assert ! File.exist?(fpath), "'#{fpath}' exists unexpectedly." unless @not
         @context.refute ! File.exist?(fpath), "'#{fpath}' doesn't exist."       if     @not

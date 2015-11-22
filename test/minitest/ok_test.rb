@@ -551,4 +551,42 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#truthy?' do
+
+    it "calles assert()." do
+      should_not_raise  { ok {123}.truthy? }
+      ex = should_raise { ok {nil}.truthy? }
+      msg = 'Expected (!! nil) == true, but not.'
+      assert_equal msg, ex.message
+    end
+
+    it "calles refute() after NOT() called." do
+      should_not_raise  { ok {nil}.NOT.truthy? }
+      ex = should_raise { ok {123}.NOT.truthy? }
+      msg = 'Expected (!! 123) == false, but not.'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
+  describe '#falthy?' do
+
+    it "calles refute()." do
+      should_not_raise  { ok {nil}.falthy? }
+      ex = should_raise { ok {123}.falthy? }
+      msg = 'Expected (!! 123) == false, but not.'
+      assert_equal msg, ex.message
+    end
+
+    it "calles assert() after NOT() called." do
+      should_not_raise  { ok {123}.NOT.falthy? }
+      ex = should_raise { ok {nil}.NOT.falthy? }
+      msg = 'Expected (!! nil) == true, but not.'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
 end

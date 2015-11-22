@@ -242,6 +242,27 @@ module Minitest
         self
       end
 
+      ## other helpers
+
+      def truthy?
+        @tested[0] = true
+        unless @not
+          @context.assert @actual, proc { "Expected (!! #{@actual.inspect}) == true, but not."  }
+        else
+          @context.refute @actual, proc { "Expected (!! #{@actual.inspect}) == false, but not." }
+        end
+        self
+      end
+
+      def falthy?
+        @tested[0] = true
+        unless @not
+          @context.refute @actual, proc { "Expected (!! #{@actual.inspect}) == false, but not." }
+        else
+          @context.assert @actual, proc { "Expected (!! #{@actual.inspect}) == true, but not."  }
+        end
+        self
+      end
 
     end
 

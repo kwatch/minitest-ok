@@ -524,6 +524,21 @@ module Minitest
       end
 
       ##
+      ## Tests attribute values.
+      ##
+      ##   User = Struct.new(:user, :age)   # define User class quickly
+      ##   user = User.new('Haruhi', 16)
+      ##   ok {user}.attrs(name: 'Haruhi', age: 16)   # Pass
+      ##
+      def attrs(expecteds={})
+        _mark_as_tested()
+        expecteds.each do |name, expected|
+          attr(name, expected)
+        end
+        self
+      end
+
+      ##
       ## Tests whether file exists or not.
       ##
       ##   ok {__FILE__}.file_exist?         # Pass

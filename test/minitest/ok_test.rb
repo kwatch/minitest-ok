@@ -155,6 +155,27 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
+  describe '#===' do
+
+    it "calls assert_operator(:===)." do
+      should_not_raise  { ok {String} === 'foo' }
+      should_not_raise  { ok {/\d+/ } === '123' }
+      ex = should_raise { ok {String} === 123   }
+      msg = 'Expected String to be === 123.'
+      assert_equal msg, ex.message
+    end
+
+    it "calls refuse_operator(:===) after NOT() called." do
+      should_not_raise  { ok {String}.NOT === 123   }
+      should_not_raise  { ok {/\d+/ }.NOT === 'abc' }
+      ex = should_raise { ok {String}.NOT === '123' }
+      msg = 'Expected String to not be === "123".'
+      assert_equal msg, ex.message
+    end
+
+  end
+
+
   describe '#=~' do
 
     it "calls assert_match()." do

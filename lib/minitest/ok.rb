@@ -160,6 +160,19 @@ module Minitest
       end
 
       ##
+      ## Tests <tt>actual === expected</tt>.
+      ##
+      ##   ok {String} === 'foo'     # Pass
+      ##   ok {/\d+/}  === '123'     # Pass
+      ##
+      def ===(expected)
+        _mark_as_tested()
+        @context.assert_operator @actual, :'===', expected  unless @not
+        @context.refute_operator @actual, :'===', expected  if     @not
+        self
+      end
+
+      ##
       ## Same as <tt>assert_match()</tt>.
       ##
       ##   ok {"abc"} =~ /\w+/        # Pass

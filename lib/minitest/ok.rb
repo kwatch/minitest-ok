@@ -546,6 +546,25 @@ module Minitest
       end
 
       ##
+      ## Tests key and value.
+      ##
+      ##   user = {:name=>'Haruhi', :age=>16}
+      ##   ok {user}.item(:name, 'Haruhi').item(:age, 16)   # Pass
+      ##
+      def item(key, expected)
+        _mark_as_tested()
+        object = @actual
+        actual = object[key]
+        pr = proc {|op|
+          "Expected <object>[#{key.inspect}] #{op} <exected>, but failed.\n" +
+          " (object: #{object.inspect})"
+        }
+        @context.assert_equal expected, actual, proc { pr.call('==') }  unless @not
+        @context.refute_equal expected, actual, proc { pr.call('!=') }  if     @not
+        self
+      end
+
+      ##
       ## Tests whether file exists or not.
       ##
       ##   ok {__FILE__}.file_exist?         # Pass

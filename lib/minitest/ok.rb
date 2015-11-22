@@ -202,18 +202,25 @@ module Minitest
       ##
       ## Same as <tt>assert_kind_of()</tt>.
       ##
-      ##   ok {123}.is_a?(Fixnum)     # Pass
-      ##   ok {123}.is_a?(Integer)    # Pass
-      ##   ok {123}.is_a?(Float)      # Fail
+      ##   ok {123}.kind_of?(Fixnum)     # Pass
+      ##   ok {123}.kind_af?(Integer)    # Pass
+      ##   ok {123}.kind_of?(Float)      # Fail
       ##
-      def is_a?(expected)
+      def kind_of?(expected)
         _mark_as_tested()
         @context.assert_kind_of expected, @actual  unless @not
         @context.refute_kind_of expected, @actual  if     @not
         self
       end
 
-      alias kind_of? is_a?
+      ##
+      ## Same as <tt>assert_kind_of()</tt>.
+      ##
+      ##   ok {123}.is_a?(Fixnum)     # Pass
+      ##   ok {123}.is_a?(Integer)    # Pass
+      ##   ok {123}.is_a?(Float)      # Fail
+      ##
+      alias is_a? kind_of?
 
       ##
       ## Same as <tt>assert_instance_of()</tt>.

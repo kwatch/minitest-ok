@@ -322,6 +322,13 @@ module Minitest
         ex = nil
         unless @not
           ex = @context.assert_raises(exception_class) { @actual.call }
+          unless message.nil?
+            if message.is_a?(Regexp)
+              @context.assert_match message, ex.message
+            else
+              @context.assert_equal message, ex.message
+            end
+          end
         else
           begin
             @actual.call

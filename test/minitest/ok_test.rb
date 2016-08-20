@@ -368,9 +368,18 @@ describe Minitest::Ok::AssertionObject do
       end
     end
 
-    it "can take error message in addition to exception class." do
+    it "can take error message string in addition to exception class." do
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, "divided by 0") }
+      ex = should_raise { ok {proc{1/0}}.raise?(ZeroDivisionError, "foobar") }
+      expected = "Expected: \"foobar\"\n  Actual: \"divided by 0\""
+      assert_equal expected, ex.message
+    end
+
+    it "can take error message regexp instead of string." do
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, /by [0]/) }
+      ex = should_raise { ok {proc{1/0}}.raise?(ZeroDivisionError, /by 99/) }
+      expected = "Expected /by 99/ to match \"divided by 0\"."
+      assert_equal expected, ex.message
     end
 
   end

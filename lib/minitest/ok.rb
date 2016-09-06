@@ -571,7 +571,6 @@ module Minitest
           "Expected <object>.#{name} #{op} <exected>, but failed.\n" +
           " (object: #{object.inspect})"
         }
-        result = expected == actual
         @context.assert_equal expected, actual, Msg.new { pr.call('==') }  unless @not
         @context.refute_equal expected, actual, Msg.new { pr.call('!=') }  if     @not
         self

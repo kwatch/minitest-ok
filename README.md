@@ -138,6 +138,12 @@ $License: MIT License $
 
 ## History
 
+
+### 2016-09-07: Release 0.2.0
+
+* [bugfix] `ok{}.raise?()` now takes error message as well as error class.
+
+
 ### 2015-11-22: Release 0.1.0
 
 * First release

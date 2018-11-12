@@ -39,18 +39,21 @@ desc "edit files (for release preparation)"
 task :edit do
   rel = ENV['rel']  or
     raise "ERROR: 'rel' environment variable expected."
+  copyright = "copyright(c) 2015-2018 kuwata-lab.com all rights reserved"
   filenames = Dir[*%w[lib/**/*.rb test/**/*_test.rb test/test_helper.rb *.gemspec]]
   filenames.each do |fname|
     File.open(fname, 'r+', encoding: 'utf-8') do |f|
       content = f.read()
-      x = content.gsub!(/\$Release:.*?\$/, "$Release: #{rel} $")
-      if x.nil?
+      x = content
+      x = x.gsub(/\$Release:.*?\$/, "$Release: #{rel} $")
+      x = x.gsub(/\$Copyright:.*?\$/, "$Copyright: #{copyright} $")
+      if x == content
         puts "[_] #{fname}"
       else
         puts "[C] #{fname}"
         f.rewind()
         f.truncate(0)
-        f.write(content)
+        f.write(x)
       end
     end
   end

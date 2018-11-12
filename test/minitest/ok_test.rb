@@ -169,7 +169,9 @@ describe Minitest::Ok::AssertionObject do
       should_not_raise  { ok {String}.NOT === 123   }
       should_not_raise  { ok {/\d+/ }.NOT === 'abc' }
       ex = should_raise { ok {String}.NOT === '123' }
-      msg = 'Expected String to not be === "123".'
+      #msg = 'Expected String to not be === "123".'
+      msg = ('Expected String to not be === # encoding: UTF-8'+"\n"+
+             '"123".')
       assert_equal msg, ex.message
     end
 
@@ -181,14 +183,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_match()." do
       should_not_raise  { ok {"hom"} =~ /\w+/ }
       ex = should_raise { ok {"hom"} =~ /\d+/ }
-      msg = 'Expected /\d+/ to match "hom".'
+      #msg = 'Expected /\d+/ to match "hom".'
+      msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
+             '"hom".')
       assert_equal msg, ex.message
     end
 
     it "calls refute_match() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT =~ /\d+/ }
       ex = should_raise { ok {"hom"}.NOT =~ /\w+/ }
-      msg = 'Expected /\w+/ to not match "hom".'
+      #msg = 'Expected /\w+/ to not match "hom".'
+      msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
+             '"hom".')
       assert_equal msg, ex.message
     end
 
@@ -200,14 +206,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls refute_match()." do
       should_not_raise  { ok {"hom"} !~ /\d+/ }
       ex = should_raise { ok {"hom"} !~ /\w+/ }
-      msg = 'Expected /\w+/ to not match "hom".'
+      #msg = 'Expected /\w+/ to not match "hom".'
+      msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
+             '"hom".')
       assert_equal msg, ex.message
     end
 
     it "calls assert_match() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT !~ /\w+/ }
       ex = should_raise { ok {"hom"}.NOT !~ /\d+/ }
-      msg = 'Expected /\d+/ to match "hom".'
+      #msg = 'Expected /\d+/ to match "hom".'
+      msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
+             '"hom".')
       assert_equal msg, ex.message
     end
 
@@ -219,14 +229,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_kind_of()." do
       should_not_raise  { ok {"hom"}.is_a?(String) }
       ex = should_raise { ok {"hom"}.is_a?(Array)  }
-      msg = 'Expected "hom" to be a kind of Array, not String.'
+      #msg = 'Expected "hom" to be a kind of Array, not String.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"hom" to be a kind of Array, not String.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_kind_of() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT.is_a?(Array) }
       ex = should_raise { ok {"hom"}.NOT.is_a?(String) }
-      msg = 'Expected "hom" to not be a kind of String.'
+      #msg = 'Expected "hom" to not be a kind of String.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"hom" to not be a kind of String.')
       assert_equal msg, ex.message
     end
 
@@ -238,14 +252,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_kind_of()." do
       should_not_raise  { ok {"hom"}.kind_of?(String) }
       ex = should_raise { ok {"hom"}.kind_of?(Array)  }
-      msg = 'Expected "hom" to be a kind of Array, not String.'
+      #msg = 'Expected "hom" to be a kind of Array, not String.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"hom" to be a kind of Array, not String.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_kind_of() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT.kind_of?(Array) }
       ex = should_raise { ok {"hom"}.NOT.kind_of?(String) }
-      msg = 'Expected "hom" to not be a kind of String.'
+      #msg = 'Expected "hom" to not be a kind of String.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"hom" to not be a kind of String.')
       assert_equal msg, ex.message
     end
 
@@ -371,14 +389,26 @@ describe Minitest::Ok::AssertionObject do
     it "can take error message string in addition to exception class." do
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, "divided by 0") }
       ex = should_raise { ok {proc{1/0}}.raise?(ZeroDivisionError, "foobar") }
-      expected = "Expected: \"foobar\"\n  Actual: \"divided by 0\""
+      #expected = "Expected: \"foobar\"\n  Actual: \"divided by 0\""
+      expected = [
+        '--- expected',
+        '+++ actual',
+        '@@ -1,2 +1,2 @@',
+        '-# encoding: UTF-8',
+        '-"foobar"',
+        '+# encoding: ASCII-8BIT',
+        '+"divided by 0"',
+        '',
+      ].join("\n")
       assert_equal expected, ex.message
     end
 
     it "can take error message regexp instead of string." do
       should_not_raise  { ok {proc{1/0}}.raise?(ZeroDivisionError, /by [0]/) }
       ex = should_raise { ok {proc{1/0}}.raise?(ZeroDivisionError, /by 99/) }
-      expected = "Expected /by 99/ to match \"divided by 0\"."
+      #expected = "Expected /by 99/ to match \"divided by 0\"."
+      expected = ('Expected /by 99/ to match # encoding: ASCII-8BIT'+"\n"+
+                  '"divided by 0".')
       assert_equal expected, ex.message
     end
 
@@ -470,11 +500,22 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_output()." do
       should_not_raise  { ok {proc {puts 123}}.output?("123\n", "") }
       ex = should_raise { ok {proc {puts 123}}.output?("", "123\n") }
+      #msg = [
+      #  'In stderr.',
+      #  '--- expected',
+      #  '+++ actual',
+      #  '@@ -1,2 +1 @@',
+      #  '-"123',
+      #  '-"',
+      #  '+""',
+      #  '',
+      #].join("\n")
       msg = [
         'In stderr.',
         '--- expected',
         '+++ actual',
-        '@@ -1,2 +1 @@',
+        '@@ -1,3 +1 @@',
+        '-# encoding: UTF-8',
         '-"123',
         '-"',
         '+""',
@@ -499,11 +540,22 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_silent()." do
       should_not_raise  { ok {proc {nil}}.silent? }
       ex = should_raise { ok {proc {puts 123}}.silent? }
+      #msg = [
+      #  'In stdout.',
+      #  '--- expected',
+      #  '+++ actual',
+      #  '@@ -1 +1,2 @@',
+      #  '-""',
+      #  '+"123',
+      #  '+"',
+      #  '',
+      #].join("\n")
       msg = [
         'In stdout.',
         '--- expected',
         '+++ actual',
-        '@@ -1 +1,2 @@',
+        '@@ -1,2 +1,2 @@',
+        '-# encoding: UTF-8',
         '-""',
         '+"123',
         '+"',
@@ -528,14 +580,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_predicate()." do
       should_not_raise  { ok {"".freeze}.frozen? }
       ex = should_raise { ok {"".dup() }.frozen? }
-      msg = 'Expected "" to be frozen?.'
+      #msg = 'Expected "" to be frozen?.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"" to be frozen?.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_predicate() after NOT() called." do
       should_not_raise  { ok {"".dup() }.NOT.frozen? }
       ex = should_raise { ok {"".freeze}.NOT.frozen? }
-      msg = 'Expected "" to not be frozen?.'
+      #msg = 'Expected "" to not be frozen?.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"" to not be frozen?.')
       assert_equal msg, ex.message
     end
 
@@ -547,14 +603,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_predicate()." do
       should_not_raise  { ok {"".taint}.tainted? }
       ex = should_raise { ok {"".dup()}.tainted? }
-      msg = 'Expected "" to be tainted?.'
+      #msg = 'Expected "" to be tainted?.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"" to be tainted?.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_predicate() after NOT() called." do
       should_not_raise  { ok {"".dup()}.NOT.tainted? }
       ex = should_raise { ok {"".taint}.NOT.tainted? }
-      msg = 'Expected "" to not be tainted?.'
+      #msg = 'Expected "" to not be tainted?.'
+      msg = ('Expected # encoding: UTF-8'+"\n"+
+             '"" to not be tainted?.')
       assert_equal msg, ex.message
     end
 

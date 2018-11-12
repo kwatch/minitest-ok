@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###
-### $Release: 0.3.0 $
+### $Release: 0.3.1 $
 ### $Copyright: copyright(c) 2015-2018 kuwata-lab.com all rights reserved $
 ### $License: MIT License $
 ###

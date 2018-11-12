@@ -111,8 +111,13 @@ module Minitest
       ##
       def ==(expected)
         _mark_as_tested()
-        @context.assert_equal expected, @actual  unless @not
-        @context.refute_equal expected, @actual  if     @not
+        if nil == expected
+          @context.assert_nil @actual  unless @not
+          @context.refute_nil @actual  if     @not
+        else
+          @context.assert_equal expected, @actual  unless @not
+          @context.refute_equal expected, @actual  if     @not
+        end
         self
       end
 

@@ -754,7 +754,7 @@ describe Minitest::Ok::AssertionObject do
 
   describe '#attr' do
 
-    class User
+    class User1
       def initialize(name, age)
         @name, @age = name, age
       end
@@ -762,24 +762,24 @@ describe Minitest::Ok::AssertionObject do
     end
 
     it "calles assert_equal()." do
-      user = User.new('Haruhi', 16)
+      user = User1.new('Haruhi', 16)
       should_not_raise  { ok {user}.attr(:name, 'Haruhi').attr(:age, 16) }
       ex = should_raise { ok {user}.attr(:name, 'Haruhi').attr(:age, 12) }
       msg = ("Expected <object>.age == <exected>, but failed.\n" +
-             " (object: #<User:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
+             " (object: #<User1:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
              "Expected: 12\n" +
              "  Actual: 16")
-      assert_equal msg, ex.message.gsub(/<User:0x\w+/, '<User:0xXXXXXX')
+      assert_equal msg, ex.message.gsub(/<User1:0x\w+/, '<User1:0xXXXXXX')
     end
 
     it "calles refute_equal() after NOT() called." do
-      user = User.new('Haruhi', 16)
+      user = User1.new('Haruhi', 16)
       should_not_raise  { ok {user}.NOT.attr(:name, 'Suzumiya').attr(:age, 12) }
       ex = should_raise { ok {user}.NOT.attr(:name, 'Suzumiya').attr(:age, 16) }
       msg = ("Expected <object>.age != <exected>, but failed.\n" +
-             " (object: #<User:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
+             " (object: #<User1:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
              "Expected 16 to not be equal to 16.")
-      assert_equal msg, ex.message.gsub(/<User:0x\w+/, '<User:0xXXXXXX')
+      assert_equal msg, ex.message.gsub(/<User1:0x\w+/, '<User1:0xXXXXXX')
     end
 
   end
@@ -787,7 +787,7 @@ describe Minitest::Ok::AssertionObject do
 
   describe '#attrs' do
 
-    class User
+    class User2
       def initialize(name, age)
         @name, @age = name, age
       end
@@ -795,24 +795,24 @@ describe Minitest::Ok::AssertionObject do
     end
 
     it "calles assert_equal()." do
-      user = User.new('Haruhi', 16)
+      user = User2.new('Haruhi', 16)
       should_not_raise  { ok {user}.attrs(name: 'Haruhi', age: 16) }
       ex = should_raise { ok {user}.attrs(name: 'Haruhi', age: 12) }
       msg = ("Expected <object>.age == <exected>, but failed.\n" +
-             " (object: #<User:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
+             " (object: #<User2:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
              "Expected: 12\n" +
              "  Actual: 16")
-      assert_equal msg, ex.message.gsub(/<User:0x\w+/, '<User:0xXXXXXX')
+      assert_equal msg, ex.message.gsub(/<User2:0x\w+/, '<User2:0xXXXXXX')
     end
 
     it "calles refute_equal() after NOT() called." do
-      user = User.new('Haruhi', 16)
+      user = User2.new('Haruhi', 16)
       should_not_raise  { ok {user}.NOT.attrs(name: 'Suzumiya', age: 12) }
       ex = should_raise { ok {user}.NOT.attrs(name: 'Suzumiya', age: 16) }
       msg = ("Expected <object>.age != <exected>, but failed.\n" +
-             " (object: #<User:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
+             " (object: #<User2:0xXXXXXX @name=\"Haruhi\", @age=16>).\n" +
              "Expected 16 to not be equal to 16.")
-      assert_equal msg, ex.message.gsub(/<User:0x\w+/, '<User:0xXXXXXX')
+      assert_equal msg, ex.message.gsub(/<User2:0x\w+/, '<User2:0xXXXXXX')
     end
 
   end

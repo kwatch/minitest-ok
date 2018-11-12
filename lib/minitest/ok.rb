@@ -119,6 +119,9 @@ module Minitest
           @context.refute_equal expected, @actual  if     @not
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -132,6 +135,9 @@ module Minitest
         @context.refute_equal expected, @actual  unless @not
         @context.assert_equal expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -146,6 +152,9 @@ module Minitest
         @context.assert_operator @actual, :'>', expected  unless @not
         @context.refute_operator @actual, :'>', expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -160,6 +169,9 @@ module Minitest
         @context.assert_operator @actual, :'>=', expected  unless @not
         @context.refute_operator @actual, :'>=', expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -174,6 +186,9 @@ module Minitest
         @context.assert_operator @actual, :'<', expected  unless @not
         @context.refute_operator @actual, :'<', expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -188,6 +203,9 @@ module Minitest
         @context.assert_operator @actual, :'<=', expected  unless @not
         @context.refute_operator @actual, :'<=', expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -201,6 +219,9 @@ module Minitest
         @context.assert_operator @actual, :'===', expected  unless @not
         @context.refute_operator @actual, :'===', expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -214,6 +235,9 @@ module Minitest
         @context.assert_match expected, @actual  unless @not
         @context.refute_match expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -227,6 +251,9 @@ module Minitest
         @context.refute_match expected, @actual  unless @not
         @context.assert_match expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -241,6 +268,9 @@ module Minitest
         @context.assert_kind_of expected, @actual  unless @not
         @context.refute_kind_of expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -263,6 +293,9 @@ module Minitest
         @context.assert_instance_of expected, @actual  unless @not
         @context.refute_instance_of expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -278,6 +311,9 @@ module Minitest
         @context.assert_same expected, @actual  unless @not
         @context.refute_same expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -293,6 +329,9 @@ module Minitest
         @context.assert_empty @actual  unless @not
         @context.refute_empty @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -306,6 +345,9 @@ module Minitest
         @context.assert_in_delta(expected, @actual, delta)  unless @not
         @context.refute_in_delta(expected, @actual, delta)  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -319,6 +361,9 @@ module Minitest
         @context.assert_in_epsilon(expected, @actual, epsilon)  unless @not
         @context.refute_in_epsilon(expected, @actual, epsilon)  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -353,6 +398,9 @@ module Minitest
           end
         end
         return ex   # not self!
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -367,6 +415,9 @@ module Minitest
           raise "NOT.throw? is unsupported because refute_throws() is not defined in Minitest."
         @context.assert_throws(sym) { @actual.call }
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -380,6 +431,9 @@ module Minitest
         @context.assert_respond_to @actual, expected  unless @not
         @context.refute_respond_to @actual, expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -394,6 +448,9 @@ module Minitest
         @context.assert_includes @actual, expected  unless @not
         @context.refute_includes @actual, expected  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -408,6 +465,9 @@ module Minitest
         @context.assert_includes expected, @actual  unless @not
         @context.refute_includes expected, @actual  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -422,6 +482,9 @@ module Minitest
           raise "use ok().silent? instead of ok().NOT.output?."
         @context.assert_output(stdout, stderr, &@actual)
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -436,6 +499,9 @@ module Minitest
           raise "use ok().output? instead of ok().NOT.silent?."
         @context.assert_silent(&@actual)
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ## for predicates
@@ -451,6 +517,9 @@ module Minitest
         @context.assert_predicate @actual, :frozen?  unless @not
         @context.refute_predicate @actual, :frozen?  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -464,6 +533,9 @@ module Minitest
         @context.assert_predicate @actual, :tainted?  unless @not
         @context.refute_predicate @actual, :tainted?  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -483,6 +555,9 @@ module Minitest
           @context.refute result, "Expected #{@actual.inspect} not to have instance variable #{varname}, but has it."
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -517,6 +592,9 @@ module Minitest
           end
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ## other helpers
@@ -539,6 +617,9 @@ module Minitest
           @context.refute @actual, Msg.new { "Expected (!! #{@actual.inspect}) == false, but not." }
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -559,6 +640,9 @@ module Minitest
           @context.assert @actual, Msg.new { "Expected (!! #{@actual.inspect}) == true, but not." }
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -579,6 +663,9 @@ module Minitest
         @context.assert_equal expected, actual, Msg.new { pr.call('==') }  unless @not
         @context.refute_equal expected, actual, Msg.new { pr.call('!=') }  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -594,6 +681,9 @@ module Minitest
           attr(name, expected)
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -613,6 +703,9 @@ module Minitest
         @context.assert_equal expected, actual, Msg.new { pr.call('==') }  unless @not
         @context.refute_equal expected, actual, Msg.new { pr.call('!=') }  if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -627,6 +720,9 @@ module Minitest
           item(key, expected)
         end
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -645,6 +741,9 @@ module Minitest
         else
           @context.refute File.exist?(fpath), "File '#{fpath}' exists unexpectedly."
         end
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -663,6 +762,9 @@ module Minitest
         else
           @context.refute File.exist?(fpath),     "Directory '#{fpath}' exists unexpectedly."
         end
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
       ##
@@ -678,6 +780,9 @@ module Minitest
         @context.assert ! File.exist?(fpath), "'#{fpath}' exists unexpectedly." unless @not
         @context.refute ! File.exist?(fpath), "'#{fpath}' doesn't exist."       if     @not
         self
+      rescue Minitest::Assertion => ex
+        ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
+        raise
       end
 
     end

@@ -273,16 +273,16 @@ describe Minitest::Ok::AssertionObject do
   describe '#instance_of?' do
 
     it "calls assert_instance_of()." do
-      should_not_raise  { ok {123}.instance_of?(Fixnum)  }
-      ex = should_raise { ok {123}.instance_of?(Integer) }
-      msg = 'Expected 123 to be an instance of Integer, not Fixnum.'
+      should_not_raise  { ok {1.23}.instance_of?(Float)  }
+      ex = should_raise { ok {1.23}.instance_of?(Integer) }
+      msg = 'Expected 1.23 to be an instance of Integer, not Float.'
       assert_equal msg, ex.message
     end
 
     it "calls refute_instance_of() after NOT() called." do
-      should_not_raise  { ok {123}.NOT.instance_of?(Integer) }
-      ex = should_raise { ok {123}.NOT.instance_of?(Fixnum)  }
-      msg = 'Expected 123 to not be an instance of Fixnum.'
+      should_not_raise  { ok {1.23}.NOT.instance_of?(Integer) }
+      ex = should_raise { ok {1.23}.NOT.instance_of?(Float)  }
+      msg = 'Expected 1.23 to not be an instance of Float.'
       assert_equal msg, ex.message
     end
 
@@ -443,14 +443,14 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_respond_to()." do
       should_not_raise  { ok {[1]}.respond_to?(:each) }
       ex = should_raise { ok {123}.respond_to?(:each) }
-      msg = "Expected 123 (Fixnum) to respond to #each."
+      msg = "Expected 123 (#{1.class}) to respond to #each."
       assert_equal msg, ex.message
     end
 
     it "calls refute_respond_to() after NOT() called." do
       should_not_raise  { ok {[1]}.respond_to?(:each) }
       ex = should_raise { ok {123}.respond_to?(:each) }
-      msg = "Expected 123 (Fixnum) to respond to #each."
+      msg = "Expected 123 (#{1.class}) to respond to #each."
       assert_equal msg, ex.message
     end
 

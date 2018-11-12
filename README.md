@@ -138,8 +138,13 @@ $License: MIT License $
 
 ## History
 
+### 2018-11-13: Release 0.3.1
 
-### 2018-11-13: Release 0.3.0
+* [bugfix] add change history to README.
+* [bugfix] update copyright year.
+
+
+### 2018-11-12: Release 0.3.0
 
 * [bugfix] `ok {}` shows filename and lineno correctly error happened.
 * [change] `ok {} == nil` calls `assert_nil()` instead of `assert_equal()`.

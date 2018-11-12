@@ -139,6 +139,13 @@ $License: MIT License $
 ## History
 
 
+### 2018-11-13: Release 0.3.0
+
+* [bugfix] `ok {}` shows filename and lineno correctly error happened.
+* [change] `ok {} == nil` calls `assert_nil()` instead of `assert_equal()`.
+* [bugfix] update test script to run successfully on recent ruby.
+
+
 ### 2016-09-07: Release 0.2.0
 
 * [bugfix] `ok{}.raise?()` now takes error message as well as error class.

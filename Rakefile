@@ -12,6 +12,9 @@ task :default => :test
 
 desc "show how to release"
 task :help do
+  rel = ENV['rel']  or abort "rake help: required 'rel=X.X.X'"
+  rel =~ /(\d+\.\d+)/
+  branch = "rel-#{$1}"
   puts <<END
 How to release:
 
@@ -19,16 +22,16 @@ How to release:
     $ git diff
     $ which ruby
     $ rake test                 # for confirmation
-    $ git checkout -b rel-1.0   # or git checkout rel-1.0
-    $ rake edit rel=1.0.0
+    $ git checkout -b #{branch}   # or git checkout #{branch}
+    $ rake edit rel=#{rel}
     $ git diff
-    $ git commit -a -m "release preparation for 1.0.0"
+    $ git commit -a -m "release preparation for #{rel}"
     $ rake build                # for confirmation
     $ rake install              # for confirmation
     $ #rake release
-    $ gem push pkg/minitest-ok-1.0.0.gem
-    $ git tag v1.0.0
-    $ git push -u origin rel-1.0
+    $ gem push pkg/minitest-ok-#{rel}.gem
+    $ git tag v#{rel}
+    $ git push -u origin #{branch}
     $ git push --tags
 END
 

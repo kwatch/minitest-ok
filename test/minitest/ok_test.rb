@@ -16,7 +16,8 @@ describe Minitest::Ok::AssertionObject do
     begin
       yield
     rescue Exception => ex
-      assert false, "Nothing should not be raised, but #{ex.class} raised.\n[Message] #{ex}"
+      _called = caller(1).grep(/ok_test\.rb/).map {|x| "  - #{x}" }.join("\n")
+      assert false, "Nothing should not be raised, but #{ex.class} raised.\n#{_called}\n[Message] #{ex}"
     end
   end
 
@@ -26,7 +27,8 @@ describe Minitest::Ok::AssertionObject do
     rescue Minitest::Assertion => ex
       return ex
     else
-      assert false, "Assertion should be raised, but nothing raised."
+      _called = caller(1).grep(/ok_test\.rb/).map {|x| "  - #{x}" }.join("\n")
+      assert false, "Assertion should be raised, but nothing raised.\n#{_called}"
     end
   end
 
@@ -169,9 +171,9 @@ describe Minitest::Ok::AssertionObject do
       should_not_raise  { ok {String}.NOT === 123   }
       should_not_raise  { ok {/\d+/ }.NOT === 'abc' }
       ex = should_raise { ok {String}.NOT === '123' }
-      #msg = 'Expected String to not be === "123".'
-      msg = ('Expected String to not be === # encoding: UTF-8'+"\n"+
-             '"123".')
+      msg = 'Expected String to not be === "123".'
+      #msg = ('Expected String to not be === # encoding: UTF-8'+"\n"+
+      #       '"123".')
       assert_equal msg, ex.message
     end
 
@@ -183,18 +185,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_match()." do
       should_not_raise  { ok {"hom"} =~ /\w+/ }
       ex = should_raise { ok {"hom"} =~ /\d+/ }
-      #msg = 'Expected /\d+/ to match "hom".'
-      msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
-             '"hom".')
+      msg = 'Expected /\d+/ to match "hom".'
+      #msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
+      #       '"hom".')
       assert_equal msg, ex.message
     end
 
     it "calls refute_match() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT =~ /\d+/ }
       ex = should_raise { ok {"hom"}.NOT =~ /\w+/ }
-      #msg = 'Expected /\w+/ to not match "hom".'
-      msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
-             '"hom".')
+      msg = 'Expected /\w+/ to not match "hom".'
+      #msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
+      #       '"hom".')
       assert_equal msg, ex.message
     end
 
@@ -206,18 +208,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls refute_match()." do
       should_not_raise  { ok {"hom"} !~ /\d+/ }
       ex = should_raise { ok {"hom"} !~ /\w+/ }
-      #msg = 'Expected /\w+/ to not match "hom".'
-      msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
-             '"hom".')
+      msg = 'Expected /\w+/ to not match "hom".'
+      #msg = ('Expected /\w+/ to not match # encoding: UTF-8'+"\n"+
+      #       '"hom".')
       assert_equal msg, ex.message
     end
 
     it "calls assert_match() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT !~ /\w+/ }
       ex = should_raise { ok {"hom"}.NOT !~ /\d+/ }
-      #msg = 'Expected /\d+/ to match "hom".'
-      msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
-             '"hom".')
+      msg = 'Expected /\d+/ to match "hom".'
+      #msg = ('Expected /\d+/ to match # encoding: UTF-8'+"\n"+
+      #       '"hom".')
       assert_equal msg, ex.message
     end
 
@@ -229,18 +231,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_kind_of()." do
       should_not_raise  { ok {"hom"}.is_a?(String) }
       ex = should_raise { ok {"hom"}.is_a?(Array)  }
-      #msg = 'Expected "hom" to be a kind of Array, not String.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"hom" to be a kind of Array, not String.')
+      msg = 'Expected "hom" to be a kind of Array, not String.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"hom" to be a kind of Array, not String.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_kind_of() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT.is_a?(Array) }
       ex = should_raise { ok {"hom"}.NOT.is_a?(String) }
-      #msg = 'Expected "hom" to not be a kind of String.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"hom" to not be a kind of String.')
+      msg = 'Expected "hom" to not be a kind of String.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"hom" to not be a kind of String.')
       assert_equal msg, ex.message
     end
 
@@ -252,18 +254,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_kind_of()." do
       should_not_raise  { ok {"hom"}.kind_of?(String) }
       ex = should_raise { ok {"hom"}.kind_of?(Array)  }
-      #msg = 'Expected "hom" to be a kind of Array, not String.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"hom" to be a kind of Array, not String.')
+      msg = 'Expected "hom" to be a kind of Array, not String.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"hom" to be a kind of Array, not String.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_kind_of() after NOT() called." do
       should_not_raise  { ok {"hom"}.NOT.kind_of?(Array) }
       ex = should_raise { ok {"hom"}.NOT.kind_of?(String) }
-      #msg = 'Expected "hom" to not be a kind of String.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"hom" to not be a kind of String.')
+      msg = 'Expected "hom" to not be a kind of String.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"hom" to not be a kind of String.')
       assert_equal msg, ex.message
     end
 
@@ -393,10 +395,12 @@ describe Minitest::Ok::AssertionObject do
       expected = [
         '--- expected',
         '+++ actual',
-        '@@ -1,2 +1,2 @@',
-        '-# encoding: UTF-8',
+       #'@@ -1,2 +1,2 @@',
+       #'-# encoding: UTF-8',
+        '@@ -1 +1,3 @@',
         '-"foobar"',
         '+# encoding: ASCII-8BIT',
+        '+#    valid: true',
         '+"divided by 0"',
         '',
       ].join("\n")
@@ -408,6 +412,7 @@ describe Minitest::Ok::AssertionObject do
       ex = should_raise { ok {proc{1/0}}.raise?(ZeroDivisionError, /by 99/) }
       #expected = "Expected /by 99/ to match \"divided by 0\"."
       expected = ('Expected /by 99/ to match # encoding: ASCII-8BIT'+"\n"+
+                  '#    valid: true'+"\n"+
                   '"divided by 0".')
       assert_equal expected, ex.message
     end
@@ -514,8 +519,9 @@ describe Minitest::Ok::AssertionObject do
         'In stderr.',
         '--- expected',
         '+++ actual',
-        '@@ -1,3 +1 @@',
-        '-# encoding: UTF-8',
+       #'@@ -1,3 +1 @@',
+       #'-# encoding: UTF-8',
+        '@@ -1,2 +1 @@',
         '-"123',
         '-"',
         '+""',
@@ -554,8 +560,9 @@ describe Minitest::Ok::AssertionObject do
         'In stdout.',
         '--- expected',
         '+++ actual',
-        '@@ -1,2 +1,2 @@',
-        '-# encoding: UTF-8',
+       #'@@ -1,2 +1,2 @@',
+       #'-# encoding: UTF-8',
+        '@@ -1 +1,2 @@',
         '-""',
         '+"123',
         '+"',
@@ -580,18 +587,18 @@ describe Minitest::Ok::AssertionObject do
     it "calls assert_predicate()." do
       should_not_raise  { ok {"".freeze}.frozen? }
       ex = should_raise { ok {"".dup() }.frozen? }
-      #msg = 'Expected "" to be frozen?.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"" to be frozen?.')
+      msg = 'Expected "" to be frozen?.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"" to be frozen?.')
       assert_equal msg, ex.message
     end
 
     it "calls refute_predicate() after NOT() called." do
       should_not_raise  { ok {"".dup() }.NOT.frozen? }
       ex = should_raise { ok {"".freeze}.NOT.frozen? }
-      #msg = 'Expected "" to not be frozen?.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"" to not be frozen?.')
+      msg = 'Expected "" to not be frozen?.'
+      #msg = ('Expected # encoding: UTF-8'+"\n"+
+      #       '"" to not be frozen?.')
       assert_equal msg, ex.message
     end
 
@@ -601,20 +608,16 @@ describe Minitest::Ok::AssertionObject do
   describe '#tainted?' do
 
     it "calls assert_predicate()." do
-      should_not_raise  { ok {"".taint}.tainted? }
-      ex = should_raise { ok {"".dup()}.tainted? }
-      #msg = 'Expected "" to be tainted?.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"" to be tainted?.')
+      should_not_raise  { ok {[ ]}.empty? }
+      ex = should_raise { ok {[1]}.empty? }
+      msg = "Expected [1] to be empty."
       assert_equal msg, ex.message
     end
 
     it "calls refute_predicate() after NOT() called." do
-      should_not_raise  { ok {"".dup()}.NOT.tainted? }
-      ex = should_raise { ok {"".taint}.NOT.tainted? }
-      #msg = 'Expected "" to not be tainted?.'
-      msg = ('Expected # encoding: UTF-8'+"\n"+
-             '"" to not be tainted?.')
+      should_not_raise  { ok {[1]}.NOT.empty? }
+      ex = should_raise { ok {[ ]}.NOT.empty? }
+      msg = "Expected [] to not be empty."
       assert_equal msg, ex.message
     end
 

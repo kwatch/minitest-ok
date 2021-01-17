@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###
-### $Release: 0.3.1 $
+### $Release: 0.3.2 $
 ### $Copyright: copyright(c) 2015-2018 kuwata-lab.com all rights reserved $
 ### $License: MIT License $
 ###
@@ -59,7 +59,7 @@ module Minitest
 
   module Ok
 
-    VERSION = '$Release: 0.3.1 $'.split()[1]
+    VERSION = '$Release: 0.3.2 $'.split()[1]
 
 
     class Msg < Proc    # :nodoc:

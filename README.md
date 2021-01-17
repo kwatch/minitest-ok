@@ -138,6 +138,11 @@ $License: MIT License $
 
 ## History
 
+### 2021-01-17: Release 0.3.2
+
+* [bugfix] fix to work on Ruby 3.
+
+
 ### 2018-11-13: Release 0.3.1
 
 * [bugfix] add change history to README.

@@ -75,12 +75,16 @@ module Minitest
         @context = context
         @not     = false
         @tested  = tested = [false]
-        ObjectSpace.define_finalizer(self, proc {
+        ObjectSpace.define_finalizer(self, self.class._finalizer_callback(tested, location))
+      end
+
+      def self._finalizer_callback(tested, location)  # :nodoc:
+        return proc do
           unless tested[0]
             loc = location.to_s.split(/:in /).first
             $stderr.puts "** WARNING: ok() called but no assertion invoked (#{loc})"
           end
-        })
+        end
       end
 
       def _mark_as_tested   # :nodoc:

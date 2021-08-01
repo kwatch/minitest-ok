@@ -85,8 +85,8 @@ describe 'Minitest::Ok' do
     ok {123}.truthy?               # similar to assert 123
     ok {0}.truthy?                 # similar to assert 0
     ok {""}.truthy?                # similar to assert ""
-    ok {false}.falthy?             # similar to refute false
-    ok {nil}.falthy?               # similar to refute nil
+    ok {false}.falsy?              # similar to refute false
+    ok {nil}.falsy?                # similar to refute nil
 
     ## predicates
     ok {""}.empty?                 # same as assert_empty? ""

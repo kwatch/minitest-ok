@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "minitest-ok"
-  spec.version       = '$Release: 0.3.2 $'.split()[1]
+  spec.version       = '$Release: 0.3.3 $'.split()[1]
   spec.authors       = ["makoto kuwata"]
   spec.email         = ["kwa(at)kuwata-lab.com"]
 

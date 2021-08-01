@@ -104,7 +104,7 @@ describe 'Minitest::Ok' do
     obj.instance_variable_set('@x', 10)
     ok {obj}.instance_variable_defined?('@x')
 
-    ok {'logo.png'}.end_with?('.png')   # same as assert 'logon.png'.start_with?('.png')
+    ok {'logo.png'}.end_with?('.png')   # same as assert 'logon.png'.end_with?('.png')
     ok {[1,2,3]}.any? {|x| x % 2 == 0}  # same as assert [1,2,3].any? {...}
     ok {[1,2,3]}.NOT.all? {|x| x < 0 }  # same as refute [1,2,3].all? {...}
 

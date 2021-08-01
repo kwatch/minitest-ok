@@ -138,6 +138,11 @@ $License: MIT License $
 
 ## History
 
+### 2021-08-02: Release 0.3.3
+
+* [bugfix] rename 'ok {}.falthy?' to 'ok {}.falsy?'.
+
+
 ### 2021-01-17: Release 0.3.2
 
 * [bugfix] fix to work on Ruby 3.

@@ -34,7 +34,7 @@ module Minitest
     ##   ok {1..9}.include?(5)       # same as assert_includes 5, 1..9
     ##   ok {1..9}.NOT.include?(0)   # same as refute_includes 0, 1..9
     ##   ok {""}.truthy?             # same as assert true, !!""
-    ##   ok {nil}.falthy?            # same as assert false, !!""
+    ##   ok {nil}.falsy?             # same as assert false, !!""
     ##
     ##   ex = ok { proc { 1 / 0 } }.raise?(ZeroDivisionError, "divided by 0")
     ##   p ex      #=> #<ZeroDivisionError: divided by 0>
@@ -629,14 +629,14 @@ module Minitest
       ##
       ## Tests whether actual is false or nil.
       ##
-      ##   ok {nil}.falthy?                  # Pass
-      ##   ok {false}.falthy?                # Pass
-      ##   ok {true}.falthy?                 # Fail
-      ##   ok {0}.falthy?                    # Fail
-      ##   ok {""}.falthy?                   # Fail
-      ##   ok {[]}.falthy?                   # Fail
+      ##   ok {nil}.falsy?                  # Pass
+      ##   ok {false}.falsy?                # Pass
+      ##   ok {true}.falsy?                 # Fail
+      ##   ok {0}.falsy?                    # Fail
+      ##   ok {""}.falsy?                   # Fail
+      ##   ok {[]}.falsy?                   # Fail
       ##
-      def falthy?
+      def falsy?
         _mark_as_tested()
         unless @not
           @context.refute @actual, Msg.new { "Expected (!! #{@actual.inspect}) == false, but not." }
@@ -648,6 +648,7 @@ module Minitest
         ex.backtrace.delete_if {|bt| bt.start_with?(__FILE__) }
         raise
       end
+      alias falthy? falsy?
 
       ##
       ## Tests attribute value.

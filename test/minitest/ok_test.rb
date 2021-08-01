@@ -736,18 +736,18 @@ describe Minitest::Ok::AssertionObject do
   end
 
 
-  describe '#falthy?' do
+  describe '#falsy?' do
 
     it "calles refute()." do
-      should_not_raise  { ok {nil}.falthy? }
-      ex = should_raise { ok {123}.falthy? }
+      should_not_raise  { ok {nil}.falsy? }
+      ex = should_raise { ok {123}.falsy? }
       msg = 'Expected (!! 123) == false, but not.'
       assert_equal msg, ex.message
     end
 
     it "calles assert() after NOT() called." do
-      should_not_raise  { ok {123}.NOT.falthy? }
-      ex = should_raise { ok {nil}.NOT.falthy? }
+      should_not_raise  { ok {123}.NOT.falsy? }
+      ex = should_raise { ok {nil}.NOT.falsy? }
       msg = 'Expected (!! nil) == true, but not.'
       assert_equal msg, ex.message
     end
